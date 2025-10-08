@@ -20,6 +20,48 @@ To Implement Diffie Hellman Key Exchange Algorithm
 
 ## Program:
 ```
+#include <stdio.h>
+
+long long int mod_exp(long long int base, long long int exp, long long int mod) {
+    long long int result = 1;
+    while (exp > 0) {
+        if (exp % 2 == 1)
+            result = (result * base) % mod;
+        exp = exp >> 1;
+        base = (base * base) % mod;
+    }
+    return result;
+}
+
+int main() {
+    long long int P, G, a, b, x, y, ka, kb;
+    printf("\n********* Diffie-Hellman Key Exchange Algorithm **********\n\n");
+    printf("Enter a prime number P: ");
+    scanf("%lld", &P);
+    printf("The value of P: %lld\n", P);
+    printf("Enter a primitive root G for P: ");
+    scanf("%lld", &G);
+    printf("The value of G: %lld\n\n", G);
+    printf("Enter the private key for Alice (a): ");
+    scanf("%lld", &a);
+    x = mod_exp(G, a, P);
+    printf("The public key for Alice (x = G^a mod P): %lld\n", x);
+    printf("Enter the private key for Bob (b): ");
+    scanf("%lld", &b);
+    y = mod_exp(G, b, P);
+    printf("The public key for Bob (y = G^b mod P): %lld\n\n", y);
+    ka = mod_exp(y, a, P);
+    kb = mod_exp(x, b, P);
+    printf("Shared secret key for Alice (ka = y^a mod P): %lld\n", ka);
+    printf("Shared secret key for Bob (kb = x^b mod P): %lld\n", kb);
+    if (ka == kb) {
+        printf("\nDiffie-Hellman Key Exchange successful. Both parties share the same key.\n");
+    } else {
+        printf("\nError: The keys for Alice and Bob do not match.\n");
+    }
+    return 0;
+}
+
 
 
 
